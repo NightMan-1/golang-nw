@@ -36,7 +36,7 @@ func New(version string, nwOs string, nwArch string) Pkg {
 		panic(fmt.Errorf("Unsupported arch %q", nwArch))
 	}
 
-	url := fmt.Sprintf("http://dl.node-webkit.org/%s/node-webkit-%s-%s-%s%s", version, version, pkgOs.os, arch, pkgOs.ext)
+	url := fmt.Sprintf("http://dl.node-webkit.org/%s/nwjs-%s-%s-%s%s", version, version, pkgOs.os, arch, pkgOs.ext)
 
 	pkg := Pkg{
 		Url:          url,
@@ -111,8 +111,9 @@ func (p Pkg) Package(nodeWebkitPath string, nw io.Reader, binName string, destDi
 
 	// Get list of files in the zip archive, excluding the preceding directory
 	zipFiles := map[string]*zip.File{}
+	rootFilder := strings.TrimSuffix(nodeWebkitPath, filepath.Ext(nodeWebkitPath)) + "/" // or string(os.PathSeparator)
 	for _, f := range zr.File {
-		zipFiles[path.Base(f.Name)] = f
+		zipFiles[strings.Replace(f.Name, rootFilder, "", -1)] = f
 	}
 
 	if p.Bin != "" {
@@ -165,6 +166,9 @@ func (p Pkg) copyDependencies(zipFiles map[string]*zip.File, destDir string) err
 	// And extract the dependencies
 	for _, dep := range p.Dependencies {
 		filename := filepath.Join(destDir, dep)
+		if (filepath.Dir(filename) != "."){
+			os.MkdirAll(destDir + "/" + filepath.Dir(filename), 0755)
+		}
 
 		// Only copy over if it doesn't already exist
 		if exists, err := isExists(filename); err != nil {
@@ -211,14 +215,14 @@ type pkgOs struct {
 var windows = pkgOs{
 	os:   "win",
 	bin:  "nw.exe",
-	deps: []string{"ffmpegsumo.dll", "icudtl.dat", "libEGL.dll", "libGLESv2.dll", "nw.pak"},
+	deps: []string{"locales/en-US.pak", "d3dcompiler_47.dll", "ffmpeg.dll", "icudtl.dat", "libEGL.dll", "libGLESv2.dll", "natives_blob.bin", "node.dll", "nw.dll", "nw_elf.dll", "resources.pak", "v8_context_snapshot.bin", "nw_100_percent.pak", "nw_200_percent.pak"},
 	ext:  ".zip",
 }
 
 var linux = pkgOs{
 	os:   "linux",
 	bin:  "nw",
-	deps: []string{"libffmpegsumo.so", "nw.pak", "icudtl.dat"},
+	deps: []string{"locales/en-US.pak", "lib/libffmpeg.so", "lib/libnode.so", "lib/libnw.so", "icudtl.dat", "natives_blob.bin", "v8_context_snapshot.bin", "nw_100_percent.pak", "nw_200_percent.pak", "resources.pak"},
 	ext:  ".tar.gz",
 }
 
