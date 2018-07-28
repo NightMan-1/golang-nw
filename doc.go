@@ -7,16 +7,16 @@ Instructions
 
 Go get golang-nw:
 
-    go get github.com/lonnc/golang-nw/cmd/golang-nw-pkg
+    go get github.com/NightMan-1/golang-nw/cmd/golang-nw-pkg
 
 Create an app:
 
-See https://github.com/lonnc/golang-nw/blob/master/cmd/example/main.go
+See https://github.com/NightMan-1/golang-nw/blob/master/cmd/example/main.go
 	package main
 
 	import (
 		"fmt"
-		"github.com/lonnc/golang-nw"
+		"github.com/NightMan-1/golang-nw"
 		"net/http"
 	)
 
@@ -45,7 +45,7 @@ See https://github.com/lonnc/golang-nw/blob/master/cmd/example/main.go
 
 Build your app:
 
-    go install .\src\github.com\lonnc\golang-nw\cmd\example
+    go install .\src\github.com\NightMan-1\golang-nw\cmd\example
 
 
 Wrap it in node-webkit:
@@ -53,7 +53,7 @@ Wrap it in node-webkit:
     .\bin\golang-nw-pkg.exe -app=.\bin\example.exe -name="My Application" -bin="myapp.exe" -toolbar=false
 
     Building:        myapp.exe.nw
-    Downloading:     https://s3.amazonaws.com/node-webkit/v0.8.4/node-webkit-v0.8.4-win-ia32.zip
+    Downloading:     http://dl.node-webkit.org/v0.32.0/nwjs-v0.32.0-win-x64.zip
     Packaging:       myapp.exe
 
 You are now good to go:
@@ -61,8 +61,8 @@ You are now good to go:
     .\myapp.exe
 
 You may want to create your own build script so you can control window dimensions etc.
-See http://godoc.org/github.com/lonnc/golang-nw/build and
-https://github.com/lonnc/golang-nw/blob/master/cmd/golang-nw-pkg/pkg.go
+See http://godoc.org/github.com/NightMan-1/golang-nw/build and
+https://github.com/NightMan-1/golang-nw/blob/master/cmd/golang-nw-pkg/pkg.go
 
 Command line options:
 
